@@ -38,7 +38,7 @@ publish {
     userOrg = 'erz05'
     groupId = 'com.github.erz05'
     artifactId = 'TimePicker'
-    version = '0.0.1'
+    version = '0.1.0'
     description = 'Android Library for TimePicker View'
     website = 'https://github.com/erz05/TimePicker'
 }
