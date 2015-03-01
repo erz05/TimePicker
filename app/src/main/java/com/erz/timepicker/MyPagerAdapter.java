@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
-    int[] layoutIDs = {R.layout.normal_clock, R.layout.color_clocks};
+    int[] layoutIDs = {R.layout.normal_clock, R.layout.color_clocks, R.layout.many_clocks};
 
     public MyPagerAdapter(FragmentManager fm) {
         super(fm);

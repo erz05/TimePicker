@@ -9,20 +9,26 @@
         android:layout_gravity="center"
         android:gravity="center">
         <com.erz.timepicker_library.TimePicker
+            xmlns:timepicker="http://schemas.android.com/apk/res-auto"
             android:id="@+id/picker1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_gravity="bottom"
-            android:background="#ff0"/>
+            android:background="#ff0"
+            timepicker:clock_color="#0f0"/>
 
         <com.erz.timepicker_library.TimePicker
+            xmlns:timepicker="http://schemas.android.com/apk/res-auto"
             android:id="@+id/picker2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_gravity="bottom"
-            android:background="#f0f"/>
+            android:background="#f0f"
+            timepicker:clock_color="#FFA500"
+            timepicker:text_color="#fff"
+            timepicker:dial_color="#fff"/>
 
     </TableRow>
 
@@ -32,20 +38,26 @@
         android:layout_gravity="center"
         android:gravity="center">
         <com.erz.timepicker_library.TimePicker
+            xmlns:timepicker="http://schemas.android.com/apk/res-auto"
             android:id="@+id/picker3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_gravity="top"
-            android:background="#f00"/>
+            android:background="#f00"
+            timepicker:clock_color="#f0f"
+            timepicker:text_color="#fff"
+            timepicker:dial_color="#fff"/>
 
         <com.erz.timepicker_library.TimePicker
+            xmlns:timepicker="http://schemas.android.com/apk/res-auto"
             android:id="@+id/picker4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_gravity="top"
-            android:background="#0ff"/>
+            android:background="#0ff"
+            timepicker:clock_color="#00f"/>
     </TableRow>
 
 </TableLayout>

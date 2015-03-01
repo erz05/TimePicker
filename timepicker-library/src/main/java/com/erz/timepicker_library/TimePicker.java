@@ -17,6 +17,7 @@
 package com.erz.timepicker_library;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -34,6 +35,7 @@ import java.util.Date;
  * Created by edgarramirez on 2/26/15.
  */
 public class TimePicker extends View {
+
     private static final String STATE_PARENT = "parent";
     private static final String STATE_ANGLE = "angle";
     private static final String STATE_TEXT_COLOR = "textColor";
@@ -42,8 +44,8 @@ public class TimePicker extends View {
     private static final String STATE_DISABLE_TOUCH = "disableTouch";
 
     Paint paint;
-    Paint textPaint;
     RectF rectF;
+
     float width;
     float height;
     float min;
@@ -58,7 +60,7 @@ public class TimePicker extends View {
     float dialX;
     float dialY;
     final static float secAngle = 360/12;
-    int i;
+
     int startAngle;
     int hour;
     int minutes;
@@ -67,15 +69,19 @@ public class TimePicker extends View {
     int textColor = Color.BLACK;
     int clockColor = Color.BLACK;
     int dialColor = Color.BLACK;
+
     double angle;
     double degrees;
+
     boolean isMoving;
     boolean amPm;
     boolean twentyFour;
     boolean disableTouch;
+
     String hStr;
     String mStr;
     String amPmStr;
+
     OnTimeChangedListener timeChangedListener;
     Calendar calendar = Calendar.getInstance();
 
@@ -85,25 +91,33 @@ public class TimePicker extends View {
 
     public TimePicker(Context context) {
         super(context);
-        init();
+        init(context, null);
     }
 
     public TimePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs);
     }
 
-    private void init() {
+    private void init(Context context, AttributeSet attrs) {
         angle = (-Math.PI / 2)+.001;
+
         paint = new Paint();
-        paint.setColor(clockColor);
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
-        textPaint = new Paint();
-        textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setColor(textColor);
-        textPaint.setAntiAlias(true);
+        paint.setTextAlign(Paint.Align.CENTER);
+
         rectF = new RectF();
+
+        if(attrs != null){
+            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TimePicker);
+            if(typedArray != null){
+                textColor = typedArray.getColor(R.styleable.TimePicker_text_color, Color.BLACK);
+                clockColor = typedArray.getColor(R.styleable.TimePicker_clock_color, Color.BLACK);
+                dialColor = typedArray.getColor(R.styleable.TimePicker_dial_color, Color.BLACK);
+                disableTouch = typedArray.getBoolean(R.styleable.TimePicker_disable_touch, false);
+            }
+        }
     }
 
     @Override
@@ -115,7 +129,6 @@ public class TimePicker extends View {
         setMeasuredDimension((int)min, (int)min);
 
         offset = min * 0.5f;
-        paint.setStrokeWidth(min/30);
         padding = min/20;
         radius = min/2-(padding*2);
         dialRadius = radius/5;
@@ -126,19 +139,9 @@ public class TimePicker extends View {
     protected void onDraw(Canvas canvas) {
         canvas.translate(offset, offset);
 
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(clockColor);
+        paint.setStrokeWidth(1);
+        paint.setStyle(Paint.Style.FILL);
         paint.setAlpha(255);
-        canvas.drawOval(rectF, paint);
-
-        startAngle = 0;
-        for(i=0; i<12; i++){
-            canvas.save();
-            canvas.rotate(startAngle, 0, 0);
-            canvas.drawLine(0, radius, 0, radius - padding, paint);
-            canvas.restore();
-            startAngle += secAngle;
-        }
 
         //Rad to Deg
         degrees = (Math.toDegrees(angle) + 90) % 360;
@@ -158,7 +161,8 @@ public class TimePicker extends View {
 
         previousHour = hour;
 
-        textPaint.setTextSize(min/5);
+        paint.setColor(textColor);
+        paint.setTextSize(min/5);
         if(twentyFour){
             tmp = hour;
             if(!amPm){
@@ -167,20 +171,36 @@ public class TimePicker extends View {
                 if(tmp == 12) tmp = 0;
             }
             hStr = (tmp < 10) ? "0"+tmp : tmp+"";
-            canvas.drawText(hStr + ":" + mStr, 0, textPaint.getTextSize()/3, textPaint);
+            canvas.drawText(hStr + ":" + mStr, 0, paint.getTextSize()/3, paint);
         }else {
             hStr = (hour < 10) ? "0"+hour : hour+"";
-            canvas.drawText(hStr + ":" + mStr, 0, textPaint.getTextSize() / 4, textPaint);
-            textPaint.setTextSize(min / 10);
-            canvas.drawText(amPmStr, 0, textPaint.getTextSize() * 2, textPaint);
+            canvas.drawText(hStr + ":" + mStr, 0, paint.getTextSize() / 4, paint);
+            paint.setTextSize(min / 10);
+            canvas.drawText(amPmStr, 0, paint.getTextSize() * 2, paint);
         }
 
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(dialColor);
-        paint.setAlpha(100);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(min/30);
+        paint.setColor(clockColor);
+        canvas.drawOval(rectF, paint);
 
-        calculatePointerPosition(angle);
-        canvas.drawCircle(dialX, dialY, dialRadius, paint);
+        startAngle = 0;
+        for(tmp=0; tmp<12; tmp++){
+            canvas.save();
+            canvas.rotate(startAngle, 0, 0);
+            canvas.drawLine(0, radius, 0, radius - padding, paint);
+            canvas.restore();
+            startAngle += secAngle;
+        }
+
+        if(!disableTouch) {
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(dialColor);
+            paint.setAlpha(100);
+
+            calculatePointerPosition(angle);
+            canvas.drawCircle(dialX, dialY, dialRadius, paint);
+        }
     }
 
     @Override
@@ -188,18 +208,15 @@ public class TimePicker extends View {
         if(disableTouch) return false;
         getParent().requestDisallowInterceptTouchEvent(true);
 
-        // Convert coordinates to our internal coordinate system
         posX = event.getX() - offset;
         posY = event.getY() - offset;
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                // Check whether the user pressed on the pointer.
                 calculatePointerPosition(angle);
-                if (posX >= (dialX - dialRadius)
-                        && posX <= (dialX + dialRadius)
-                        && posY >= (dialY - dialRadius)
-                        && posY <= (dialY + dialRadius)) {
+                if (posX >= (dialX - dialRadius) && posX <= (dialX + dialRadius)
+                        && posY >= (dialY - dialRadius) && posY <= (dialY + dialRadius)) {
+
                     slopX = posX - dialX;
                     slopY = posY - dialY;
                     isMoving = true;
@@ -238,23 +255,24 @@ public class TimePicker extends View {
     @Override
     protected Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
-
         Bundle state = new Bundle();
+
         state.putParcelable(STATE_PARENT, superState);
         state.putDouble(STATE_ANGLE, angle);
         state.putInt(STATE_CLOCK_COLOR, clockColor);
         state.putInt(STATE_DIAL_COLOR, dialColor);
         state.putInt(STATE_TEXT_COLOR, textColor);
         state.putBoolean(STATE_DISABLE_TOUCH, disableTouch);
+
         return state;
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle savedState = (Bundle) state;
-
         Parcelable superState = savedState.getParcelable(STATE_PARENT);
         super.onRestoreInstanceState(superState);
+
         angle = savedState.getDouble(STATE_ANGLE);
         clockColor = savedState.getInt(STATE_CLOCK_COLOR);
         dialColor = savedState.getInt(STATE_DIAL_COLOR);
@@ -266,13 +284,11 @@ public class TimePicker extends View {
         this.textColor = color;
         this.clockColor = color;
         this.dialColor = color;
-        textPaint.setColor(textColor);
         invalidate();
     }
 
     public void setTextColor(int textColor){
         this.textColor = textColor;
-        textPaint.setColor(textColor);
         invalidate();
     }
 
@@ -302,6 +318,7 @@ public class TimePicker extends View {
         }else {
             if(tmp == 12) tmp = 0;
         }
+
         calendar.set(Calendar.HOUR_OF_DAY, tmp);
         calendar.set(Calendar.MINUTE, minutes);
         return calendar.getTime();
