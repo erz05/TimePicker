@@ -1,6 +1,8 @@
 # TimePicker
 Android Library for TimePicker View
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-TimePicker-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1610)
+
 <H2>Images</H2>
 <img width="300px" src="https://github.com/erz05/TimePicker/blob/master/images/Screenshot_2015-03-01-00-53-47.png" />
 <br>
