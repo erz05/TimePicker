@@ -10,8 +10,45 @@
     <com.erz.timepicker_library.TimePicker
         android:id="@+id/timePicker"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="#fff"
         android:layout_gravity="center"/>
+
+    <RadioGroup android:id="@+id/myRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/twelve"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="12 hour"
+            android:textColor="#000"
+            android:textSize="34sp"
+            android:background="#fff"
+            android:padding="16dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:checked="true"
+            android:button="@android:color/transparent"/>
+
+        <RadioButton
+            android:id="@+id/twentyFour"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="24 hour"
+            android:textColor="#fff"
+            android:textSize="34sp"
+            android:background="#000"
+            android:padding="16dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:button="@android:color/transparent"/>
+
+    </RadioGroup>
 
 </LinearLayout>
