@@ -55,6 +55,9 @@ timePicker.setTextColor(Color.YELLOW);
 //Disable Touch
 timePicker.disableTouch(true);
 
+//Enable Twenty Four Hour Clock
+timePicker.enableTwentyFourHour(true);
+
 //Set Time
 timePicker.setTime(new Date());
 
