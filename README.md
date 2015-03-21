@@ -5,6 +5,11 @@ Android Library for TimePicker View
 
 [ ![Download](https://api.bintray.com/packages/erz05/maven/TimePicker/images/download.svg) ](https://bintray.com/erz05/maven/TimePicker/_latestVersion)
 
+<a href="https://play.google.com/store/apps/details?id=com.erz.timepicker">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+</a>
+
 <H2>Images</H2>
 <img width="300px" src="https://github.com/erz05/TimePicker/blob/master/images/Screenshot_2015-03-01-00-53-47.png" />
 <br>
