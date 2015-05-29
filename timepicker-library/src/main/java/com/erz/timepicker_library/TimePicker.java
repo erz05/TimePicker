@@ -343,7 +343,7 @@ public class TimePicker extends View {
     }
 
     public void setStep(int step) {
-        if (minutes < 0)
+        if (minutes < 1)
             this.step = 1;
         else
             this.step = step;
