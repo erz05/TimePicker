@@ -323,6 +323,8 @@ public class TimePicker extends View {
 
         calendar.set(Calendar.HOUR_OF_DAY, tmp);
         calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
 
