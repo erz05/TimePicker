@@ -64,6 +64,7 @@ public class TimePicker extends View {
     int startAngle;
     int hour;
     int minutes;
+    int step = 1;
     int tmp;
     int previousHour;
     int textColor = Color.BLACK;
@@ -153,6 +154,7 @@ public class TimePicker extends View {
 
         //get Minutes
         minutes = ((int)(degrees * 2))%60;
+        minutes = ((int)minutes/step)*step;
         mStr = (minutes < 10) ? "0"+minutes : minutes+"";
 
         //get AM/PM
@@ -338,5 +340,12 @@ public class TimePicker extends View {
 
     public void setTimeChangedListener(OnTimeChangedListener timeChangedListener){
         this.timeChangedListener = timeChangedListener;
+    }
+
+    public void setStep(int step) {
+        if (minutes < 0)
+            this.step = 1;
+        else
+            this.step = step;
     }
 }
