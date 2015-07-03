@@ -24,6 +24,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -109,13 +110,14 @@ public class TimePicker extends View {
 
         rectF = new RectF();
 
-        if(attrs != null){
+        if (attrs != null) {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TimePicker);
-            if(typedArray != null){
+            if (typedArray != null) {
                 textColor = typedArray.getColor(R.styleable.TimePicker_text_color, Color.BLACK);
                 clockColor = typedArray.getColor(R.styleable.TimePicker_clock_color, Color.BLACK);
                 dialColor = typedArray.getColor(R.styleable.TimePicker_dial_color, Color.BLACK);
                 disableTouch = typedArray.getBoolean(R.styleable.TimePicker_disable_touch, false);
+                typedArray.recycle();
             }
         }
     }
@@ -149,30 +151,30 @@ public class TimePicker extends View {
 
         //get Hour
         hour = ((int)degrees/30)%12;
-        if(hour == 0) hour = 12;
+        if (hour == 0) hour = 12;
 
         //get Minutes
         minutes = ((int)(degrees * 2))%60;
         mStr = (minutes < 10) ? "0"+minutes : minutes+"";
 
         //get AM/PM
-        if((hour == 12 && previousHour == 11) || (hour == 11 && previousHour == 12)) amPm = !amPm;
+        if ((hour == 12 && previousHour == 11) || (hour == 11 && previousHour == 12)) amPm = !amPm;
         amPmStr = amPm ? "AM" : "PM";
 
         previousHour = hour;
 
         paint.setColor(textColor);
         paint.setTextSize(min/5);
-        if(twentyFour){
+        if (twentyFour) {
             tmp = hour;
-            if(!amPm){
-                if(tmp < 12) tmp += 12;
-            }else {
-                if(tmp == 12) tmp = 0;
+            if (!amPm) {
+                if (tmp < 12) tmp += 12;
+            } else {
+                if (tmp == 12) tmp = 0;
             }
             hStr = (tmp < 10) ? "0"+tmp : tmp+"";
             canvas.drawText(hStr + ":" + mStr, 0, paint.getTextSize()/3, paint);
-        }else {
+        } else {
             hStr = (hour < 10) ? "0"+hour : hour+"";
             canvas.drawText(hStr + ":" + mStr, 0, paint.getTextSize() / 4, paint);
             paint.setTextSize(min / 10);
@@ -185,7 +187,7 @@ public class TimePicker extends View {
         canvas.drawOval(rectF, paint);
 
         startAngle = 0;
-        for(tmp=0; tmp<12; tmp++){
+        for (tmp=0; tmp<12; tmp++) {
             canvas.save();
             canvas.rotate(startAngle, 0, 0);
             canvas.drawLine(0, radius, 0, radius - padding, paint);
@@ -193,7 +195,7 @@ public class TimePicker extends View {
             startAngle += secAngle;
         }
 
-        if(!disableTouch) {
+        if (!disableTouch) {
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(dialColor);
             paint.setAlpha(100);
@@ -204,8 +206,8 @@ public class TimePicker extends View {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if(disableTouch) return false;
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
+        if (disableTouch) return false;
         getParent().requestDisallowInterceptTouchEvent(true);
 
         posX = event.getX() - offset;
@@ -221,7 +223,7 @@ public class TimePicker extends View {
                     slopY = posY - dialY;
                     isMoving = true;
                     invalidate();
-                }else{
+                } else {
                     getParent().requestDisallowInterceptTouchEvent(false);
                     return false;
                 }
@@ -229,11 +231,11 @@ public class TimePicker extends View {
             case MotionEvent.ACTION_MOVE:
                 if (isMoving) {
                     angle = (float) Math.atan2(posY - slopY, posX - slopX);
-                    if(timeChangedListener != null){
+                    if (timeChangedListener != null) {
                         timeChangedListener.timeChanged(getTime());
                     }
                     invalidate();
-                }else{
+                } else {
                     getParent().requestDisallowInterceptTouchEvent(false);
                     return false;
                 }
@@ -280,29 +282,29 @@ public class TimePicker extends View {
         disableTouch = savedState.getBoolean(STATE_DISABLE_TOUCH);
     }
 
-    public void setColor(int color){
+    public void setColor(int color) {
         this.textColor = color;
         this.clockColor = color;
         this.dialColor = color;
         invalidate();
     }
 
-    public void setTextColor(int textColor){
+    public void setTextColor(int textColor) {
         this.textColor = textColor;
         invalidate();
     }
 
-    public void setClockColor(int clockColor){
+    public void setClockColor(int clockColor) {
         this.clockColor = clockColor;
         invalidate();
     }
 
-    public void setDialColor(int dialColor){
+    public void setDialColor(int dialColor) {
         this.dialColor = dialColor;
         invalidate();
     }
 
-    public void enableTwentyFourHour(boolean twentyFour){
+    public void enableTwentyFourHour(boolean twentyFour) {
         this.twentyFour = twentyFour;
         invalidate();
     }
@@ -311,12 +313,12 @@ public class TimePicker extends View {
         this.disableTouch = disableTouch;
     }
 
-    public Date getTime(){
+    public Date getTime() {
         tmp = hour;
-        if(!amPm){
-            if(tmp < 12) tmp += 12;
-        }else {
-            if(tmp == 12) tmp = 0;
+        if (!amPm) {
+            if (tmp < 12) tmp += 12;
+        } else {
+            if (tmp == 12) tmp = 0;
         }
 
         calendar.set(Calendar.HOUR_OF_DAY, tmp);
@@ -324,7 +326,7 @@ public class TimePicker extends View {
         return calendar.getTime();
     }
 
-    public void setTime(Date date){
+    public void setTime(Date date) {
         calendar.setTime(date);
         hour = calendar.get(Calendar.HOUR);
         minutes = calendar.get(Calendar.MINUTE);
@@ -336,7 +338,7 @@ public class TimePicker extends View {
         invalidate();
     }
 
-    public void setTimeChangedListener(OnTimeChangedListener timeChangedListener){
+    public void setTimeChangedListener(OnTimeChangedListener timeChangedListener) {
         this.timeChangedListener = timeChangedListener;
     }
 }
