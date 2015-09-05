@@ -24,7 +24,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,8 +85,8 @@ public class TimePicker extends View {
     OnTimeChangedListener timeChangedListener;
     Calendar calendar = Calendar.getInstance();
 
-    public static interface OnTimeChangedListener {
-        public void timeChanged(Date date);
+    public interface OnTimeChangedListener {
+        void timeChanged(Date date);
     }
 
     public TimePicker(Context context) {
@@ -206,8 +205,8 @@ public class TimePicker extends View {
     }
 
     @Override
-    public boolean onTouchEvent(@NonNull MotionEvent event) {
-        if (disableTouch) return false;
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event == null || disableTouch) return false;
         getParent().requestDisallowInterceptTouchEvent(true);
 
         posX = event.getX() - offset;
