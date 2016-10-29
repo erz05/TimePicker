@@ -19,7 +19,7 @@ Android Library for TimePicker View
 Gradle Import: jcenter <br>
 ```groovy
 dependencies {
-    compile 'com.github.erz05:TimePicker:0.1.4@aar'
+    compile 'com.github.erz05:TimePicker:0.1.5@aar'
 }
 ```
 
