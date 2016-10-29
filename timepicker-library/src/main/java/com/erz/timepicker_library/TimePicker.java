@@ -43,47 +43,38 @@ public class TimePicker extends View {
     private static final String STATE_DIAL_COLOR = "dialColor";
     private static final String STATE_DISABLE_TOUCH = "disableTouch";
 
-    Paint paint;
-    RectF rectF;
+    private Paint paint;
+    private RectF rectF;
 
-    float width;
-    float height;
-    float min;
-    float padding;
-    float radius;
-    float dialRadius;
-    float offset;
-    float slopX;
-    float slopY;
-    float posX;
-    float posY;
-    float dialX;
-    float dialY;
-    final static float secAngle = 360 / 12;
+    private float min;
+    private float padding;
+    private float radius;
+    private float dialRadius;
+    private float offset;
+    private float slopX;
+    private float slopY;
+    private float dialX;
+    private float dialY;
+    private final static float secAngle = 360 / 12;
 
-    int startAngle;
-    int hour;
-    int minutes;
-    int tmp;
-    int previousHour;
-    int textColor = Color.BLACK;
-    int clockColor = Color.BLACK;
-    int dialColor = Color.BLACK;
+    private int hour;
+    private int minutes;
+    private int tmp;
+    private int previousHour;
+    private int textColor = Color.BLACK;
+    private int clockColor = Color.BLACK;
+    private int dialColor = Color.BLACK;
 
-    double angle;
-    double degrees;
+    private double angle;
+    private double degrees;
 
-    boolean isMoving;
-    boolean amPm;
-    boolean twentyFour;
-    boolean disableTouch;
+    private boolean isMoving;
+    private boolean amPm;
+    private boolean twentyFour;
+    private boolean disableTouch;
 
-    String hStr;
-    String mStr;
-    String amPmStr;
-
-    OnTimeChangedListener timeChangedListener;
-    Calendar calendar = Calendar.getInstance();
+    private OnTimeChangedListener timeChangedListener;
+    private Calendar calendar = Calendar.getInstance();
 
     public interface OnTimeChangedListener {
         void timeChanged(Date date);
@@ -123,8 +114,8 @@ public class TimePicker extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        width = MeasureSpec.getSize(widthMeasureSpec);
-        height = MeasureSpec.getSize(heightMeasureSpec);
+        float width = MeasureSpec.getSize(widthMeasureSpec);
+        float height = MeasureSpec.getSize(heightMeasureSpec);
 
         min = Math.min(width, height);
         setMeasuredDimension((int) min, (int) min);
@@ -154,16 +145,17 @@ public class TimePicker extends View {
 
         //get Minutes
         minutes = ((int) (degrees * 2)) % 60;
-        mStr = (minutes < 10) ? "0" + minutes : minutes + "";
+        String mStr = (minutes < 10) ? "0" + minutes : minutes + "";
 
         //get AM/PM
         if ((hour == 12 && previousHour == 11) || (hour == 11 && previousHour == 12)) amPm = !amPm;
-        amPmStr = amPm ? "AM" : "PM";
+        String amPmStr = amPm ? "AM" : "PM";
 
         previousHour = hour;
 
         paint.setColor(textColor);
         paint.setTextSize(min / 5);
+        String hStr;
         if (twentyFour) {
             tmp = hour;
             if (!amPm) {
@@ -185,7 +177,7 @@ public class TimePicker extends View {
         paint.setColor(clockColor);
         canvas.drawOval(rectF, paint);
 
-        startAngle = 0;
+        int startAngle = 0;
         for (tmp = 0; tmp < 12; tmp++) {
             canvas.save();
             canvas.rotate(startAngle, 0, 0);
@@ -209,8 +201,8 @@ public class TimePicker extends View {
         if (event == null || disableTouch) return false;
         getParent().requestDisallowInterceptTouchEvent(true);
 
-        posX = event.getX() - offset;
-        posY = event.getY() - offset;
+        float posX = event.getX() - offset;
+        float posY = event.getY() - offset;
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:

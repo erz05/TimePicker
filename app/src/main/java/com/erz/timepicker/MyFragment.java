@@ -16,7 +16,7 @@ import com.erz.timepicker_library.TimePicker;
  */
 public class MyFragment extends Fragment {
 
-    int layoutID;
+    private int layoutID;
 
     public static MyFragment newInstance(int layoutID) {
         MyFragment fragment = new MyFragment();
