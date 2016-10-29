@@ -59,7 +59,7 @@ public class TimePicker extends View {
     float posY;
     float dialX;
     float dialY;
-    final static float secAngle = 360/12;
+    final static float secAngle = 360 / 12;
 
     int startAngle;
     int hour;
@@ -100,7 +100,7 @@ public class TimePicker extends View {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        angle = (-Math.PI / 2)+.001;
+        angle = (-Math.PI / 2) + .001;
 
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -127,13 +127,13 @@ public class TimePicker extends View {
         height = MeasureSpec.getSize(heightMeasureSpec);
 
         min = Math.min(width, height);
-        setMeasuredDimension((int)min, (int)min);
+        setMeasuredDimension((int) min, (int) min);
 
         offset = min * 0.5f;
-        padding = min/20;
-        radius = min/2-(padding*2);
-        dialRadius = radius/5;
-        rectF.set(-radius,-radius,radius,radius);
+        padding = min / 20;
+        radius = min / 2 - (padding * 2);
+        dialRadius = radius / 5;
+        rectF.set(-radius, -radius, radius, radius);
     }
 
     @Override
@@ -146,15 +146,15 @@ public class TimePicker extends View {
 
         //Rad to Deg
         degrees = (Math.toDegrees(angle) + 90) % 360;
-        degrees = (degrees + 360)%360;
+        degrees = (degrees + 360) % 360;
 
         //get Hour
-        hour = ((int)degrees/30)%12;
+        hour = ((int) degrees / 30) % 12;
         if (hour == 0) hour = 12;
 
         //get Minutes
-        minutes = ((int)(degrees * 2))%60;
-        mStr = (minutes < 10) ? "0"+minutes : minutes+"";
+        minutes = ((int) (degrees * 2)) % 60;
+        mStr = (minutes < 10) ? "0" + minutes : minutes + "";
 
         //get AM/PM
         if ((hour == 12 && previousHour == 11) || (hour == 11 && previousHour == 12)) amPm = !amPm;
@@ -163,7 +163,7 @@ public class TimePicker extends View {
         previousHour = hour;
 
         paint.setColor(textColor);
-        paint.setTextSize(min/5);
+        paint.setTextSize(min / 5);
         if (twentyFour) {
             tmp = hour;
             if (!amPm) {
@@ -171,22 +171,22 @@ public class TimePicker extends View {
             } else {
                 if (tmp == 12) tmp = 0;
             }
-            hStr = (tmp < 10) ? "0"+tmp : tmp+"";
-            canvas.drawText(hStr + ":" + mStr, 0, paint.getTextSize()/3, paint);
+            hStr = (tmp < 10) ? "0" + tmp : tmp + "";
+            canvas.drawText(hStr + ":" + mStr, 0, paint.getTextSize() / 3, paint);
         } else {
-            hStr = (hour < 10) ? "0"+hour : hour+"";
+            hStr = (hour < 10) ? "0" + hour : hour + "";
             canvas.drawText(hStr + ":" + mStr, 0, paint.getTextSize() / 4, paint);
             paint.setTextSize(min / 10);
             canvas.drawText(amPmStr, 0, paint.getTextSize() * 2, paint);
         }
 
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(min/30);
+        paint.setStrokeWidth(min / 30);
         paint.setColor(clockColor);
         canvas.drawOval(rectF, paint);
 
         startAngle = 0;
-        for (tmp=0; tmp<12; tmp++) {
+        for (tmp = 0; tmp < 12; tmp++) {
             canvas.save();
             canvas.rotate(startAngle, 0, 0);
             canvas.drawLine(0, radius, 0, radius - padding, paint);
@@ -308,7 +308,7 @@ public class TimePicker extends View {
         invalidate();
     }
 
-    public void disableTouch(boolean disableTouch){
+    public void disableTouch(boolean disableTouch) {
         this.disableTouch = disableTouch;
     }
 
@@ -329,11 +329,11 @@ public class TimePicker extends View {
         calendar.setTime(date);
         hour = calendar.get(Calendar.HOUR);
         minutes = calendar.get(Calendar.MINUTE);
-        amPm = (calendar.get(Calendar.AM_PM) == Calendar.AM);
-        degrees = ((hour * 30)+270)%360;
+        amPm = calendar.get(Calendar.AM_PM) == Calendar.AM;
+        degrees = ((hour * 30) + 270) % 360;
         angle = Math.toRadians(degrees);
-        degrees = ((double)minutes/2);
-        angle += Math.toRadians(degrees)+.001;
+        degrees = ((double) minutes / 2);
+        angle += Math.toRadians(degrees) + .001;
         invalidate();
     }
 

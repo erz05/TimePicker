@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'bintray-release'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25"
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -32,7 +32,7 @@ publish {
     userOrg = 'erz05'
     groupId = 'com.github.erz05'
     artifactId = 'TimePicker'
-    version = '0.1.4'
+    version = '0.1.5'
     description = 'Android Library for TimePicker View'
     website = 'https://github.com/erz05/TimePicker'
 }

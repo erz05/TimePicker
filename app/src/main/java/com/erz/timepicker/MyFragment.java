@@ -18,32 +18,32 @@ public class MyFragment extends Fragment {
 
     int layoutID;
 
-    public static MyFragment newInstance(int layoutID){
+    public static MyFragment newInstance(int layoutID) {
         MyFragment fragment = new MyFragment();
         fragment.layoutID = layoutID;
         return fragment;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle bundle){
+    public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putInt("layoutID", layoutID);
     }
 
     @Override
-    public void onCreate(Bundle bundle){
+    public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        if(bundle != null && bundle.containsKey("layoutID")){
+        if (bundle != null && bundle.containsKey("layoutID")) {
             layoutID = bundle.getInt("layoutID");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle){
+    public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
         View V = inflater.inflate(layoutID, group, false);
 
         RadioGroup myRadioGroup = (RadioGroup) V.findViewById(R.id.myRadioGroup);
-        if(myRadioGroup != null){
+        if (myRadioGroup != null) {
             myRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -52,7 +52,7 @@ public class MyFragment extends Fragment {
                     RadioButton twelve = (RadioButton) view.findViewById(R.id.twelve);
                     RadioButton twentyFour = (RadioButton) view.findViewById(R.id.twentyFour);
                     TimePicker timePicker = (TimePicker) view.findViewById(R.id.timePicker);
-                    switch (i){
+                    switch (i) {
                         case R.id.twelve:
                             twelve.setTextColor(Color.BLACK);
                             twelve.setBackgroundColor(Color.WHITE);
